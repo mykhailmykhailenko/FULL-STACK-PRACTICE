@@ -1,5 +1,5 @@
 // Connect to mongo
-
+const mongoose = require('mongoose');
 const db = process.env.ENV_MODE || "development";
 const CONFIG = require('../config/db.json')[db];
 const User = require('./User');

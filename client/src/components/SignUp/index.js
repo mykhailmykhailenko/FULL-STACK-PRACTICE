@@ -14,8 +14,7 @@ const SignUp = () => {
 
 
     const submitHandler = (values, actions) => {
-        signUp(values)
-            .then(data => console.log(data));
+        props.apiRequest(signUp(values));
     }
 
     return (

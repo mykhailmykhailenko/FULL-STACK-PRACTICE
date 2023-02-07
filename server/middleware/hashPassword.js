@@ -12,12 +12,3 @@ module.exports.hashPass = async (req, res, next) => {
         next(error);
     }
 }
-
-/*
-{
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'mail@mks.a',
-    password: 'password'
-}
-*/

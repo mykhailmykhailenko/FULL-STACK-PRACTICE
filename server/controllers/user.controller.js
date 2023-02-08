@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const {User} = require('../models');
 const NotFoundError = require('../errors/NotFound');
 const InvalidDataError = require('../errors/InvalidDataError');
+const {createToken} = require('../services/tokenService');
 
 module.exports.signUpUser = async (req, res, next) => {
     try {
@@ -33,7 +34,9 @@ module.exports.signInUser = async (req, res, next) => {
             // Або пароль правильний, або ні.
             console.log(result); 
             if (result) {
-                res.status(200).send({data: foundUser});
+                /// Створити токен для юзера і відправити його у відповідь
+                const token = await createToken({userId: foundUser._id, email: foundUser.email});
+                res.status(200).send({data: foundUser, token});
             } else {
                throw new InvalidDataError('Invalid credentials')
             }

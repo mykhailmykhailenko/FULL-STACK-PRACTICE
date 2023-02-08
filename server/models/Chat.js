@@ -16,3 +16,8 @@ const chatSchema = new Schema({
 const Chat = model('Chat', chatSchema);
 
 module.exports = Chat;
+
+
+/*
+TODO: unique user in chats. Now one user can be participant not once.
+*/

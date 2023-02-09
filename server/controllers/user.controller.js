@@ -4,7 +4,6 @@ const TokenError = require('../errors/TokenError');
 const NotFoundError = require('../errors/NotFound');
 const InvalidDataError = require('../errors/InvalidDataError');
 const {createAccessToken, createRefreshToken, verifyRefreshToken} = require('../services/tokenService');
-
 module.exports.signUpUser = async (req, res, next) => {
     try {
         const {body, passwordHash} = req;
@@ -38,14 +37,14 @@ module.exports.signInUser = async (req, res, next) => {
                 /// Створити токен для юзера і відправити його у відповідь
                 const accessToken = await createAccessToken({userId: foundUser._id, email: foundUser.email});
                 const refreshToken = await createRefreshToken({userId: foundUser._id, email: foundUser.email})
-
+                
                 const addedToken = await RefreshToken.create({
                     token: refreshToken,
                     userId: foundUser._id
                 });
                 // TODO: check if RT successfully created
                 // TODO: check how much tokens user already use
-
+                
                 res.status(200).send({data: foundUser, tokens: {accessToken, refreshToken}});
             } else {
                throw new InvalidDataError('Invalid credentials')
@@ -57,12 +56,8 @@ module.exports.signInUser = async (req, res, next) => {
         next(error)
     }
 }
-
 module.exports.getOneUser = async (req, res, next) => {
-
 }
-
-
 /*
 1. Приходить запит на рефреш (оновлення).
  - RT валідний, ми можемо оновити сесію, згенерувати і видати користувачу свіжу пару токенів.
@@ -70,28 +65,27 @@ module.exports.getOneUser = async (req, res, next) => {
  - RT невалідний, ми не можемо оновити сесію. Ми маємо змусити користувача перелогінитись
 */
 
-
 module.exports.refreshSession = async (req, res, next) => {
     const {body, body: {refreshToken}} = req;
-    let verifyResult;
+    let verifyPayload;
         try {
-            verifyResult = await verifyRefreshToken(refreshToken); /// throw errors
+            verifyPayload = await verifyRefreshToken(refreshToken); /// throw errors
         } catch (error) {
             next(new TokenError('Invalid refresh token'));
         }
 
 
     try {
-        if(verifyResult) {
+        if(verifyPayload) {
             const foundUser = await User.findOne({
-                email: verifyRefreshToken.email
+                email: verifyPayload.email
             });
+            console.log(foundUser);
             const rtFromDB = await RefreshToken.findOne({ $and: [{
                 token: refreshToken,
             }, {
                 userId: foundUser._id
             }]}); /// RefreshToken not found
-
             if(rtFromDB) {
                 const removeRes = await rtFromDB.deleteOne(); // TODO: check if RT succefully deleted
                 /// Робимо нову пару токенів 
@@ -101,7 +95,6 @@ module.exports.refreshSession = async (req, res, next) => {
                     token: newRefreshToken,
                     userId: foundUser._id
                 });
-
                 res.status(200).send({
                     tokens: {
                         accessToken: newAccessToken,

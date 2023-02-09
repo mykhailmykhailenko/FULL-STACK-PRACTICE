@@ -5,6 +5,7 @@ const CONFIG = require('../config/db.json')[db];
 const User = require('./User');
 const Chat = require('./Chat');
 const Message = require('./Message');
+const RefreshToken = require('./RefreshToken');
 
 mongoose
 .connect(`mongodb://${CONFIG.host}:${CONFIG.port}/${CONFIG.database}`)
@@ -14,5 +15,5 @@ mongoose
 })
 
 module.exports = {
-    User, Chat, Message
+    User, Chat, Message, RefreshToken
 }

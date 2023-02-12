@@ -19,7 +19,7 @@ module.exports.addUserToChat = async (req, res, next) => {
     } catch(error) {
         next(error);
     }
-}
+}  
 
 module.exports.addNewMessage = async (req, res, next) => {
     try {

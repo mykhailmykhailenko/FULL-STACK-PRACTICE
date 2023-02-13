@@ -1,8 +1,9 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
-import { signUp } from '../../api';
+import {connect} from 'react-redux';
+import {registerUserAction} from '../../actions/actionCreators';
 
-const SignUp = () => {
+const SignUp = (props) => {
 
     const initialValues = {
         firstName: '',
@@ -14,26 +15,34 @@ const SignUp = () => {
 
 
     const submitHandler = (values, actions) => {
-        props.apiRequest(signUp(values));
+        props.sendRequest(values);
     }
 
     return (
         <Formik
-            initialValues={initialValues}
-            onSubmit={submitHandler}
+        initialValues={initialValues}
+        onSubmit={submitHandler}
         >
-            {(props) => (
-                <Form>
-                    <Field name="firstName" placeholder="Type your name" />
-                    <Field name="lastName" placeholder="Type your lastName" />
-                    <Field name="birthday" type="date" placeholder="Type your birthday" />
-                    <Field name="email" placeholder="Type your email" />
-                    <Field name="password" placeholder="Type your pass" />
-                    <button type="submit">Send!</button>
-                </Form>
-            )}
-        </Formik>
+        {(props) => (
+            <Form>
+                <Field name="firstName" placeholder="Type your name"/>
+                <Field name="lastName" placeholder="Type your lastName"/>
+                <Field name="birthday" type="date" placeholder="Type your pass"/>
+                <Field name="email" placeholder="Type your email"/>
+                <Field name="password" placeholder="Type your pass"/>
+                <button type="submit">Send!</button>
+            </Form>
+        )}
+    </Formik>
     );
 }
 
-export default SignUp;
+
+const mapStateToProps = ({error}) => ({error})
+
+const mapDispatchToProps = {
+    sendRequest: registerUserAction
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

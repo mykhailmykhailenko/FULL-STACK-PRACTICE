@@ -1,16 +1,20 @@
 import React, {useState} from 'react';
+
 import Home from './pages/Home';
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {unstable_HistoryRouter as HistoryRouter, Routes, Route} from 'react-router-dom';
+import history from './browserHistory';
 import Dashboard from './pages/Dashboard';
+
 function App() {
   const [user, setUser] = useState(null);
+
   return (
-    <BrowserRouter>
+    <HistoryRouter history={history}>
       <Routes>
-        {/* <Route path="/" element={<Home sendData={setUser}/>} /> */}
-        <Route path="/" element={<Dashboard user={user}/>} />
+        <Route path="/" element={<Home sendData={setUser}/>} />
+        <Route path="/messenger" element={<Dashboard user={user}/>} />
       </Routes>
-    </BrowserRouter>
+    </HistoryRouter>
 
   );
 }

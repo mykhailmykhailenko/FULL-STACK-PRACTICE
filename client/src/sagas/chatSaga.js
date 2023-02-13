@@ -1,6 +1,6 @@
 import {put} from 'redux-saga/effects';
-import {addNewMessage} from '../api';
-import {sendNewMessageSuccess} from '../actions/actionCreators';
+import {addNewMessage, getUserChats} from '../api';
+import {sendNewMessageSuccess, sendNewMessageError, getUserChatsSuccess, getUserChatsError} from '../actions/actionCreators';
 
 export function* createMessageSaga(action) {
     try {
@@ -10,5 +10,15 @@ export function* createMessageSaga(action) {
     } catch(error) {
         // Якщо сталася помилка - ми маємо зробити новий action з помилкою і донести його до редьюсера
         yield put(sendNewMessageError(error));
+    }
+}
+
+
+export function* getUserChatsSaga(action) {
+    try {
+       const {data: {data}} = yield getUserChats(); 
+       yield put(getUserChatsSuccess(data));
+    } catch(error) {
+        yield put(getUserChatsError(error));
     }
 }

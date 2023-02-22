@@ -2,19 +2,18 @@ import React, {useState} from 'react';
 import styles from './MessageArea.module.css';
 import {sendNewMessageAction} from '../../actions/actionCreators';
 import {connect} from 'react-redux';
-
 const MessageArea = (props) => {
     const [message, setMessage] = useState('');
 
     const onSubmitHandler = (event) => {
         event.preventDefault();
-        props.sendMessage({body: message, chatId: props.currentChat})
+        console.log('send');
+        props.sendMessage({body: message, chatId: props.currentChat._id})
     }  
 
     const changeHandler = ({target: {value}}) => {
         setMessage(value)
     }
-
     return (
         <div className={styles.container}>
             <form onSubmit={onSubmitHandler}>
@@ -24,14 +23,8 @@ const MessageArea = (props) => {
         </div>
     );
 }
-
-
 const mapStateToProps = ({currentChat}) => ({currentChat})
-
 const mapDispatchToProps = {
     sendMessage: sendNewMessageAction
 }
-
-
-
 export default connect(mapStateToProps, mapDispatchToProps)(MessageArea);

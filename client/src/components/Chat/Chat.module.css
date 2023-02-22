@@ -1,6 +1,14 @@
- .chat {
+.chat {
     background-color:lemonchiffon;
     border: 1px solid lightgray;
     width: 100%;
     height: 80%;
+}
+
+.message {
+    text-align: left;
+}
+
+.user-message {
+    text-align: right;
 }

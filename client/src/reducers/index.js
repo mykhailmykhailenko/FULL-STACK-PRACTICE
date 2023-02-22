@@ -4,8 +4,10 @@ const initialState = {
     chatList: [],
     currentChat: null,
     error: null,
-    isFetching: false
+    isFetching: false,
+    notification: null
 }
+
 function reducer(state = initialState, action) {
     console.log(action);
     switch(action.type) {
@@ -64,6 +66,15 @@ function reducer(state = initialState, action) {
                 isFetching: true
             }
         }
+
+        case ACTION_TYPES.NOTIFICATION: {
+            const {data} = action;
+            return {
+                ...state,
+                notification: data
+            }
+        }
+
         default: {
             return state
         }

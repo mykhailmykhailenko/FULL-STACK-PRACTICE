@@ -1,17 +1,35 @@
 import axios from 'axios';
+import { io } from "socket.io-client";
+import store from '../store';
+import ACTION_TYPES from '../actions/actionTypes';
+
 const httpClient = axios.create({
     baseURL: 'http://localhost:5000/api'
 });
+
+
+const socket = io(`ws://localhost:5000/`);
+
+socket.on('NEW_NOTIFICATION', (data) => {
+console.log(data);
+    store.dispatch({
+        type: ACTION_TYPES.NOTIFICATION,
+        data
+        });
+})
+
+socket.emit('NEW_MESSAGE', 'I want to say something');
+
+
+
 /* Auth api */
+
 export const signIn = async (userData) => await httpClient.post('/users/sign-in', userData);
 export const signUp = async (userData) => await httpClient.post('/users/sign-up', userData);
 export const logOut = async () => {
     localStorage.clear();
 }  
-
 export const getUserData = async () => await httpClient.get('/users/');
-
-
 export const refreshSession = async () => {
     const refreshToken = localStorage.getItem('refreshToken');
     const {data} = await httpClient.post('/users/refresh', {refreshToken});

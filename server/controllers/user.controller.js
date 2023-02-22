@@ -57,6 +57,13 @@ module.exports.signInUser = async (req, res, next) => {
     }
 }
 module.exports.getOneUser = async (req, res, next) => {
+    try {
+        const {payload: {userId}} = req;
+        const user = await User.findById(userId);
+        res.status(200).send({data: user})
+    } catch(error) {
+        next(error);
+    }
 }
 /*
 1. Приходить запит на рефреш (оновлення).

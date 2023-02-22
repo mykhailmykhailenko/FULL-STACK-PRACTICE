@@ -20,7 +20,6 @@ function reducer(state = initialState, action) {
                 }
             }
         }
-
         case ACTION_TYPES.GET_USER_CHATS_SUCCESS: {
             const {data} = action;
             return {
@@ -28,7 +27,6 @@ function reducer(state = initialState, action) {
                 chatList: data
             }
         }
-
         case ACTION_TYPES.GET_CHAT_WITH_MESSAGES_SUCCESS: {
             const {data} = action;
             console.log(action);
@@ -37,7 +35,7 @@ function reducer(state = initialState, action) {
                 currentChat: data
             }
         }
-
+        case ACTION_TYPES.GET_USER_DATA_SUCCESS:
         case ACTION_TYPES.REGISTER_USER_SUCCESS: 
         case ACTION_TYPES.LOGIN_USER_SUCCESS: {
             const {data} = action;

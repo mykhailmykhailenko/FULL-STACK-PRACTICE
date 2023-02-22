@@ -48,7 +48,8 @@ module.exports.getChatWithMessages = async (req, res, next) => {
     try {
          const {params: {chatId}} = req;
          console.log(chatId);
-         const chatWithMessages = await Chat.findById(chatId).populate('messages');
+         const chatWithMessages = await Chat.findById(chatId)
+         .populate('messages');
          res.status(200).send({data: chatWithMessages});
     } catch(error) {
         next(error)
